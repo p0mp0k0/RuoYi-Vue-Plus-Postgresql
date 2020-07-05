@@ -6,12 +6,8 @@ spring:
         druid:
             # 主库数据源
             master:
-                #url: jdbc:mariadb://localhost:3306/zksk?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8#&zeroDateTimeBehavior=convertToNull
-                #username: root
-                url: jdbc:postgresql://localhost:5432/zksk?useSSL=false
-                #username: root
+                url: jdbc:postgresql://localhost:5432/ruoyi?useSSL=false
                 username: postgres
-                #password: root
                 password: 123456
             # 从库数据源
             slave:

@@ -104,7 +104,7 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
       #数据库类型
-      db-type: mysql
+      db-type: postgresql
     #自定义SQL注入器
     #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
     #自定义填充策略接口实现
