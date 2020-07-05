@@ -6,12 +6,8 @@ spring:
         druid:
             # 主库数据源
             master:
-                #url: jdbc:mariadb://localhost:3306/zksk?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8#&zeroDateTimeBehavior=convertToNull
-                #username: root
-                url: jdbc:postgresql://localhost:5432/zksk?useSSL=false
-                #username: root
+                url: jdbc:postgresql://localhost:5432/ruoyi?useSSL=false
                 username: postgres
-                #password: root
                 password: 123456
             # 从库数据源
             slave:
@@ -62,12 +58,11 @@ spring:
     # redis 配置
     redis:
         # 地址
-        cluster:
-            nodes: 127.0.0.1:6000,127.0.0.1:6001,127.0.0.1:6002,127.0.0.1:6003,127.0.0.1:6004,127.0.0.1:6005
-            # 端口，默认为6379
-        port: 6000
-            # 密码
-        password: RedisPass123456
+        host: localhost
+        # 端口，默认为6379
+        port: 6379
+        # 密码
+        password: 
         # 连接超时时间
         timeout: 10s
         lettuce:
