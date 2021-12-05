@@ -1,9 +1,14 @@
 <template>
   <div class="login">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">若依后台管理系统</h3>
+      <h3 class="title">RuoYi-Vue-Plus后台管理系统</h3>
       <el-form-item prop="username">
-        <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
+        <el-input
+          v-model="loginForm.username"
+          type="text"
+          auto-complete="off"
+          placeholder="账号"
+        >
           <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
@@ -18,7 +23,7 @@
           <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
-      <el-form-item prop="code">
+      <el-form-item prop="code" v-if="captchaOnOff">
         <el-input
           v-model="loginForm.code"
           auto-complete="off"
@@ -29,7 +34,7 @@
           <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
         </el-input>
         <div class="login-code">
-          <img :src="codeUrl" @click="getCode" />
+          <img :src="codeUrl" @click="getCode" class="login-code-img"/>
         </div>
       </el-form-item>
       <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
@@ -44,11 +49,14 @@
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>
+        <div style="float: right;" v-if="register">
+          <router-link class="link-type" :to="'/register'">立即注册</router-link>
+        </div>
       </el-form-item>
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2018-2019 ruoyi.vip All Rights Reserved.</span>
+      <span>Copyright © 2018-2021 ruoyi.vip All Rights Reserved.</span>
     </div>
   </div>
 </template>
@@ -63,7 +71,6 @@ export default {
   data() {
     return {
       codeUrl: "",
-      cookiePassword: "",
       loginForm: {
         username: "admin",
         password: "admin123",
@@ -73,14 +80,18 @@ export default {
       },
       loginRules: {
         username: [
-          { required: true, trigger: "blur", message: "用户名不能为空" }
+          { required: true, trigger: "blur", message: "请输入您的账号" }
         ],
         password: [
-          { required: true, trigger: "blur", message: "密码不能为空" }
+          { required: true, trigger: "blur", message: "请输入您的密码" }
         ],
-        code: [{ required: true, trigger: "change", message: "验证码不能为空" }]
+        code: [{ required: true, trigger: "change", message: "请输入验证码" }]
       },
       loading: false,
+      // 验证码开关
+      captchaOnOff: true,
+      // 注册开关
+      register: false,
       redirect: undefined
     };
   },
@@ -99,8 +110,11 @@ export default {
   methods: {
     getCode() {
       getCodeImg().then(res => {
-        this.codeUrl = "data:image/gif;base64," + res.img;
-        this.loginForm.uuid = res.uuid;
+        this.captchaOnOff = res.data.captchaOnOff === undefined ? true : res.data.captchaOnOff;
+        if (this.captchaOnOff) {
+          this.codeUrl = "data:image/gif;base64," + res.data.img;
+          this.loginForm.uuid = res.data.uuid;
+        }
       });
     },
     getCookie() {
@@ -126,15 +140,14 @@ export default {
             Cookies.remove("password");
             Cookies.remove('rememberMe');
           }
-          this.$store
-            .dispatch("Login", this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || "/" });
-            })
-            .catch(() => {
-              this.loading = false;
+          this.$store.dispatch("Login", this.loginForm).then(() => {
+            this.$router.push({ path: this.redirect || "/" }).catch(()=>{});
+          }).catch(() => {
+            this.loading = false;
+            if (this.captchaOnOff) {
               this.getCode();
-            });
+            }
+          });
         }
       });
     }
@@ -148,7 +161,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-image: url("../assets/image/login-background.jpg");
+  background-image: url("../assets/images/login-background.jpg");
   background-size: cover;
 }
 .title {
@@ -199,5 +212,8 @@ export default {
   font-family: Arial;
   font-size: 12px;
   letter-spacing: 1px;
+}
+.login-code-img {
+  height: 38px;
 }
 </style>

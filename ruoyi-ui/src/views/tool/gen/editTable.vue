@@ -4,8 +4,8 @@
       <el-tab-pane label="基本信息" name="basic">
         <basic-info-form ref="basicInfo" :info="info" />
       </el-tab-pane>
-      <el-tab-pane label="字段信息" name="cloum">
-        <el-table ref="dragTable" :data="cloumns" row-key="columnId" :max-height="tableHeight">
+      <el-tab-pane label="字段信息" name="columnInfo">
+        <el-table ref="dragTable" :data="columns" row-key="columnId" :max-height="tableHeight">
           <el-table-column label="序号" type="index" min-width="5%" class-name="allowDrag" />
           <el-table-column
             label="字段列名"
@@ -68,9 +68,9 @@
                 <el-option label="=" value="EQ" />
                 <el-option label="!=" value="NE" />
                 <el-option label=">" value="GT" />
-                <el-option label=">=" value="GTE" />
+                <el-option label=">=" value="GE" />
                 <el-option label="<" value="LT" />
-                <el-option label="<=" value="LTE" />
+                <el-option label="<=" value="LE" />
                 <el-option label="LIKE" value="LIKE" />
                 <el-option label="BETWEEN" value="BETWEEN" />
               </el-select>
@@ -90,6 +90,9 @@
                 <el-option label="单选框" value="radio" />
                 <el-option label="复选框" value="checkbox" />
                 <el-option label="日期控件" value="datetime" />
+                <el-option label="图片上传" value="imageUpload" />
+                <el-option label="文件上传" value="fileUpload" />
+                <el-option label="富文本控件" value="editor" />
               </el-select>
             </template>
           </el-table-column>
@@ -110,7 +113,7 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="生成信息" name="genInfo">
-        <gen-info-form ref="genInfo" :info="info" />
+        <gen-info-form ref="genInfo" :info="info" :tables="tables" :menus="menus"/>
       </el-tab-pane>
     </el-tabs>
     <el-form label-width="100px">
@@ -124,9 +127,11 @@
 <script>
 import { getGenTable, updateGenTable } from "@/api/tool/gen";
 import { optionselect as getDictOptionselect } from "@/api/system/dict/type";
+import { listMenu as getMenuTreeselect } from "@/api/system/menu";
 import basicInfoForm from "./basicInfoForm";
 import genInfoForm from "./genInfoForm";
 import Sortable from 'sortablejs'
+
 export default {
   name: "GenEdit",
   components: {
@@ -136,28 +141,37 @@ export default {
   data() {
     return {
       // 选中选项卡的 name
-      activeName: "cloum",
+      activeName: "columnInfo",
       // 表格的高度
       tableHeight: document.documentElement.scrollHeight - 245 + "px",
+      // 表信息
+      tables: [],
       // 表列信息
-      cloumns: [],
+      columns: [],
       // 字典信息
       dictOptions: [],
+      // 菜单信息
+      menus: [],
       // 表详细信息
       info: {}
     };
   },
   created() {
-    const tableId = this.$route.params && this.$route.params.tableId;
+    const tableId = this.$route.query && this.$route.query.tableId;
     if (tableId) {
       // 获取表详细信息
       getGenTable(tableId).then(res => {
-        this.cloumns = res.data.rows;
+        this.columns = res.data.rows;
         this.info = res.data.info;
+        this.tables = res.data.tables;
       });
       /** 查询字典下拉列表 */
       getDictOptionselect().then(response => {
         this.dictOptions = response.data;
+      });
+      /** 查询菜单下拉列表 */
+      getMenuTreeselect().then(response => {
+        this.menus = this.handleTree(response.data, "menuId");
       });
     }
   },
@@ -170,20 +184,21 @@ export default {
         const validateResult = res.every(item => !!item);
         if (validateResult) {
           const genTable = Object.assign({}, basicForm.model, genForm.model);
-          genTable.columns = this.cloumns;
+          genTable.columns = this.columns;
           genTable.params = {
             treeCode: genTable.treeCode,
             treeName: genTable.treeName,
-            treeParentCode: genTable.treeParentCode
+            treeParentCode: genTable.treeParentCode,
+            parentMenuId: genTable.parentMenuId
           };
           updateGenTable(genTable).then(res => {
-            this.msgSuccess(res.msg);
+            this.$modal.msgSuccess(res.msg);
             if (res.code === 200) {
               this.close();
             }
           });
         } else {
-          this.msgError("表单校验未通过，请重新检查提交内容");
+          this.$modal.msgError("表单校验未通过，请重新检查提交内容");
         }
       });
     },
@@ -196,8 +211,8 @@ export default {
     },
     /** 关闭按钮 */
     close() {
-      this.$store.dispatch("tagsView/delView", this.$route);
-      this.$router.push({ path: "/tool/gen", query: { t: Date.now()}})
+      const obj = { path: "/tool/gen", query: { t: Date.now(), pageNum: this.$route.query.pageNum } };
+      this.$tab.closeOpenPage(obj);
     }
   },
   mounted() {
@@ -205,10 +220,10 @@ export default {
     const sortable = Sortable.create(el, {
       handle: ".allowDrag",
       onEnd: evt => {
-        const targetRow = this.cloumns.splice(evt.oldIndex, 1)[0];
-        this.cloumns.splice(evt.newIndex, 0, targetRow);
-        for (let index in this.cloumns) {
-          this.cloumns[index].sort = parseInt(index) + 1;
+        const targetRow = this.columns.splice(evt.oldIndex, 1)[0];
+        this.columns.splice(evt.newIndex, 0, targetRow);
+        for (let index in this.columns) {
+          this.columns[index].sort = parseInt(index) + 1;
         }
       }
     });

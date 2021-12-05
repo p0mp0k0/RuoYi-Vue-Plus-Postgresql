@@ -1,0 +1,61 @@
+--- # 监控配置
+spring:
+  boot:
+    admin:
+      # Spring Boot Admin Client 客户端的相关配置
+      client:
+        # 增加客户端开关
+        enabled: true
+        # 设置 Spring Boot Admin Server 地址
+        url: http://localhost:9090/admin
+        instance:
+          prefer-ip: true # 注册实例时，优先使用 IP
+        username: ruoyi
+        password: 123456
+
+--- # 数据库配置
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    #driverClassName: com.mysql.cj.jdbc.Driver
+    #url: jdbc:mysql://localhost:3306/ryp?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true
+    #username: root
+    #password: root123456
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5454/ryvpp?useSSL=false
+    username: postgres
+    password: 123456
+    hikari:
+      auto-commit: true
+      connection-test-query: SELECT 1
+      connection-timeout: 10000
+      idle-timeout: 30000
+      max-lifetime: 900000
+      maximum-pool-size: 30
+      minimum-idle: 10
+      pool-name: HikariCP
+      validation-timeout: 1000
+
+--- # 邮件配置
+spring:
+  mail:
+    from: xxx@qq.com
+    host: smtp.qq.com
+    username: xxx@qq.com
+    password: xxx
+    port: 25
+    properties:
+      mail:
+        smtp:
+          auth: true
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+          starttls:
+            enable: true
+            required: true
+
+#logging:
+#  level:
+#    org.mybatis: debug
+#    org.apache.ibatis: debug
+#    org.postgresql: debug

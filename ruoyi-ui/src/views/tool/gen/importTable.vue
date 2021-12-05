@@ -28,8 +28,8 @@
     <el-row>
       <el-table @row-click="clickRow" ref="table" :data="dbTableList" @selection-change="handleSelectionChange" height="260px">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="tableName" label="表名称"></el-table-column>
-        <el-table-column prop="tableComment" label="表描述"></el-table-column>
+        <el-table-column prop="tableName" label="表名称" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column prop="tableComment" label="表描述" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
         <el-table-column prop="updateTime" label="更新时间"></el-table-column>
       </el-table>
@@ -104,8 +104,13 @@ export default {
     },
     /** 导入按钮操作 */
     handleImportTable() {
-      importTable({ tables: this.tables.join(",") }).then(res => {
-        this.msgSuccess(res.msg);
+      const tableNames = this.tables.join(",");
+      if (tableNames == "") {
+        this.$modal.msgError("请选择要导入的表");
+        return;
+      }
+      importTable({ tables: tableNames }).then(res => {
+        this.$modal.msgSuccess(res.msg);
         if (res.code === 200) {
           this.visible = false;
           this.$emit("ok");

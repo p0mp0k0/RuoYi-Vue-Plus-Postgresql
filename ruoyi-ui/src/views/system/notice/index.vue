@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="公告标题" prop="noticeTitle">
         <el-input
           v-model="queryParams.noticeTitle"
@@ -22,10 +22,10 @@
       <el-form-item label="类型" prop="noticeType">
         <el-select v-model="queryParams.noticeType" placeholder="公告类型" clearable size="small">
           <el-option
-            v-for="dict in typeOptions"
-            :key="dict.dictValue"
-            :label="dict.dictLabel"
-            :value="dict.dictValue"
+            v-for="dict in dict.type.sys_notice_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
           />
         </el-select>
       </el-form-item>
@@ -39,6 +39,7 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
+          plain
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
@@ -48,6 +49,7 @@
       <el-col :span="1.5">
         <el-button
           type="success"
+          plain
           icon="el-icon-edit"
           size="mini"
           :disabled="single"
@@ -58,6 +60,7 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
+          plain
           icon="el-icon-delete"
           size="mini"
           :disabled="multiple"
@@ -65,6 +68,7 @@
           v-hasPermi="['system:notice:remove']"
         >删除</el-button>
       </el-col>
+      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="noticeList" @selection-change="handleSelectionChange">
@@ -76,20 +80,16 @@
         prop="noticeTitle"
         :show-overflow-tooltip="true"
       />
-      <el-table-column
-        label="公告类型"
-        align="center"
-        prop="noticeType"
-        :formatter="typeFormat"
-        width="100"
-      />
-      <el-table-column
-        label="状态"
-        align="center"
-        prop="status"
-        :formatter="statusFormat"
-        width="100"
-      />
+      <el-table-column label="公告类型" align="center" prop="noticeType" width="100">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_notice_type" :value="scope.row.noticeType"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" align="center" prop="status" width="100">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_notice_status" :value="scope.row.status"/>
+        </template>
+      </el-table-column>
       <el-table-column label="创建者" align="center" prop="createBy" width="100" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="100">
         <template slot-scope="scope">
@@ -137,10 +137,10 @@
             <el-form-item label="公告类型" prop="noticeType">
               <el-select v-model="form.noticeType" placeholder="请选择">
                 <el-option
-                  v-for="dict in typeOptions"
-                  :key="dict.dictValue"
-                  :label="dict.dictLabel"
-                  :value="dict.dictValue"
+                  v-for="dict in dict.type.sys_notice_type"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -149,21 +149,21 @@
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
                 <el-radio
-                  v-for="dict in statusOptions"
-                  :key="dict.dictValue"
-                  :label="dict.dictValue"
-                >{{dict.dictLabel}}</el-radio>
+                  v-for="dict in dict.type.sys_notice_status"
+                  :key="dict.value"
+                  :label="dict.value"
+                >{{dict.label}}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="内容">
-              <Editor v-model="form.noticeContent" />
+              <editor v-model="form.noticeContent" :min-height="192"/>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer" class="dialog-footer" style="padding-top:20px">
+      <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
@@ -172,14 +172,11 @@
 </template>
 
 <script>
-import { listNotice, getNotice, delNotice, addNotice, updateNotice, exportNotice } from "@/api/system/notice";
-import Editor from '@/components/Editor';
+import { listNotice, getNotice, delNotice, addNotice, updateNotice } from "@/api/system/notice";
 
 export default {
   name: "Notice",
-  components: {
-    Editor
-  },
+  dicts: ['sys_notice_status', 'sys_notice_type'],
   data() {
     return {
       // 遮罩层
@@ -190,6 +187,8 @@ export default {
       single: true,
       // 非多个禁用
       multiple: true,
+      // 显示搜索条件
+      showSearch: true,
       // 总条数
       total: 0,
       // 公告表格数据
@@ -198,10 +197,6 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
-      // 类型数据字典
-      statusOptions: [],
-      // 状态数据字典
-      typeOptions: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -218,19 +213,13 @@ export default {
           { required: true, message: "公告标题不能为空", trigger: "blur" }
         ],
         noticeType: [
-          { required: true, message: "公告类型不能为空", trigger: "blur" }
+          { required: true, message: "公告类型不能为空", trigger: "change" }
         ]
       }
     };
   },
   created() {
     this.getList();
-    this.getDicts("sys_notice_status").then(response => {
-      this.statusOptions = response.data;
-    });
-    this.getDicts("sys_notice_type").then(response => {
-      this.typeOptions = response.data;
-    });
   },
   methods: {
     /** 查询公告列表 */
@@ -241,14 +230,6 @@ export default {
         this.total = response.total;
         this.loading = false;
       });
-    },
-    // 公告状态字典翻译
-    statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status);
-    },
-    // 公告状态字典翻译
-    typeFormat(row, column) {
-      return this.selectDictLabel(this.typeOptions, row.noticeType);
     },
     // 取消按钮
     cancel() {
@@ -304,19 +285,15 @@ export default {
         if (valid) {
           if (this.form.noticeId != undefined) {
             updateNotice(this.form).then(response => {
-              if (response.code === 200) {
-                this.msgSuccess("修改成功");
-                this.open = false;
-                this.getList();
-              }
+              this.$modal.msgSuccess("修改成功");
+              this.open = false;
+              this.getList();
             });
           } else {
             addNotice(this.form).then(response => {
-              if (response.code === 200) {
-                this.msgSuccess("新增成功");
-                this.open = false;
-                this.getList();
-              }
+              this.$modal.msgSuccess("新增成功");
+              this.open = false;
+              this.getList();
             });
           }
         }
@@ -325,16 +302,12 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const noticeIds = row.noticeId || this.ids
-      this.$confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return delNotice(noticeIds);
-        }).then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        }).catch(function() {});
+      this.$modal.confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？').then(function() {
+        return delNotice(noticeIds);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {});
     }
   }
 };

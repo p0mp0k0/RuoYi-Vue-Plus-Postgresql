@@ -1,0 +1,66 @@
+package ${packageName}.domain;
+
+import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+import java.io.Serializable;
+import java.util.Date;
+import java.math.BigDecimal;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+#if($table.crud || $table.sub)
+import com.ruoyi.common.core.domain.BaseEntity;
+#elseif($table.tree)
+import com.ruoyi.common.core.domain.TreeEntity;
+#end
+#foreach ($column in $columns)
+#if($column.isPk==1 && $column.isIncrement==1)
+import com.baomidou.mybatisplus.annotation.KeySequence;
+#end
+#end
+
+/**
+ * ${functionName}对象 ${tableName}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+#if($table.crud || $table.sub)
+    #set($Entity="BaseEntity")
+#elseif($table.tree)
+    #set($Entity="TreeEntity")
+#end
+@Data
+@Accessors(chain = true)
+@TableName("${tableName}")
+#foreach ($column in $columns)
+#if($column.isPk==1 && $column.isIncrement==1)
+@KeySequence("${tableName}_${column.columnName}_seq")
+#end
+#end
+public class ${ClassName} extends ${Entity} {
+
+    private static final long serialVersionUID=1L;
+
+#foreach ($column in $columns)
+#if(!$table.isSuperColumn($column.javaField))
+    /**
+     * $column.columnComment
+     */
+#if($column.javaField=='delFlag')
+    @TableLogic
+#end
+#if($column.javaField=='version')
+    @Version
+#end
+#if($column.isPk==1 && $column.isIncrement==1)
+    @TableId(value = "$column.columnName", type = IdType.AUTO)
+#end
+    private $column.javaType $column.javaField;
+#end
+#end
+
+}
