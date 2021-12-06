@@ -1107,10 +1107,10 @@ create table if not exists sys_oss
     oss_id        bigserial
         constraint sys_oss_pk
         primary key,
-    file_name     varchar(64)  default ''::character varying not null,
-    original_name varchar(64)  default ''::character varying not null,
+    file_name     varchar(255)  default ''::character varying not null,
+    original_name varchar(255)  default ''::character varying not null,
     file_suffix   varchar(10)  default ''::character varying not null,
-    url           varchar(200) default ''::character varying not null,
+    url           varchar(500) default ''::character varying not null,
     create_by     varchar(64)  default ''::character varying,
     create_time   timestamp,
     update_by     varchar(64)  default ''::character varying,
