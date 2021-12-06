@@ -1,6 +1,6 @@
 ## 修改简介
 [![码云Gitee](https://gitee.com/p0mp0k0/RuoYi-Vue-Plus-Postgresql/badge/star.svg?theme=blue)](https://gitee.com/p0mp0k0/RuoYi-Vue-Plus-Postgresql)
-[![GitHub](https://img.shields.io/github/stars//p0mp0k0/RuoYi-Vue-Plus-Postgresql.svg?style=social&label=Stars)](https://github.com/p0mp0k0/RuoYi-Vue-Plus-Postgresql)
+[![GitHub](https://img.shields.io/github/stars/p0mp0k0/RuoYi-Vue-Plus-Postgresql.svg?style=social&label=Stars)](https://github.com/p0mp0k0/RuoYi-Vue-Plus-Postgresql)
 
 基于RuoYi-Vue-Plus 3.4.0，数据库替换为Postgresql。
 >修改内容：
