@@ -77,7 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectPageDbTableList" parameterType="GenTable" resultMap="GenTableResult">
 		select table_name, table_comment, create_time, update_time from list_table
-		where table_name NOT LIKE 'qrtz_%' AND table_name NOT LIKE 'gen_%'
+		where table_name NOT LIKE 'xxl_job_%' AND table_name NOT LIKE 'gen_%'
 		AND table_name NOT IN (select table_name from gen_table)
 		<if test="genTable.tableName != null and genTable.tableName != ''">
 			AND lower(table_name) like lower(concat('%', #{genTable.tableName}, '%'))
@@ -86,10 +86,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND lower(table_comment) like lower(concat('%', #{genTable.tableComment}, '%'))
 		</if>
 		<if test="genTable.params.beginTime != null and genTable.params.beginTime != ''"><!-- 开始时间检索 -->
-			AND date_format(create_time,'%y%m%d') &gt;= date_format(#{genTable.params.beginTime},'%y%m%d')
+			AND create_time &gt;= to_date(#{genTable.params.beginTime},'YYYY-MM-DD')
 		</if>
 		<if test="genTable.params.endTime != null and genTable.params.endTime != ''"><!-- 结束时间检索 -->
-			AND date_format(create_time,'%y%m%d') &lt;= date_format(#{genTable.params.endTime},'%y%m%d')
+			AND create_time &lt;= to_date(#{genTable.params.endTime},'YYYY-MM-DD')
 		</if>
 		order by create_time desc
 	</select>
@@ -104,18 +104,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="tableComment != null and tableComment != ''">
 				AND lower(table_comment) like lower(concat('%', #{tableComment}, '%'))
 			</if>
-            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-                AND create_time &gt;= to_date(#{params.beginTime},'YYYY-MM-DD')
-            </if>
-            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-                AND create_time &gt;= to_date(#{params.endTime},'YYYY-MM-DD')
-            </if>
+			<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+				AND create_time &gt;= to_date(#{params.beginTime},'YYYY-MM-DD')
+			</if>
+			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+				AND create_time &lt;= to_date(#{params.endTime},'YYYY-MM-DD')
+			</if>
 		</where>
 	</select>
 
 	<select id="selectDbTableList" parameterType="GenTable" resultMap="GenTableResult">
 		select table_name, table_comment, create_time, update_time from list_table
-		where table_name NOT LIKE 'qrtz_%' AND table_name NOT LIKE 'gen_%'
+		where table_name NOT LIKE 'xxl_job_%' AND table_name NOT LIKE 'gen_%'
 		AND table_name NOT IN (select table_name from gen_table)
 		<if test="tableName != null and tableName != ''">
 			AND lower(table_name) like lower(concat('%', #{tableName}, '%'))
@@ -127,14 +127,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND create_time &gt;= to_date(#{params.beginTime},'YYYY-MM-DD')
 		</if>
 		<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-			AND create_time &gt;= to_date(#{params.endTime},'YYYY-MM-DD')
+			AND create_time &lt;= to_date(#{params.endTime},'YYYY-MM-DD')
 		</if>
         order by create_time desc
 	</select>
 
 	<select id="selectDbTableListByNames" resultMap="GenTableResult">
 		select table_name, table_comment, create_time, update_time from list_table
-		where table_name NOT LIKE 'qrtz_%' and table_name NOT LIKE 'gen_%'
+		where table_name NOT LIKE 'xxl_job_%' and table_name NOT LIKE 'gen_%'
 		and table_name in
 	    <foreach collection="array" item="name" open="(" separator="," close=")">
  			#{name}

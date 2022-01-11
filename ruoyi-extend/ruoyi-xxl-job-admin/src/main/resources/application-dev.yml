@@ -17,11 +17,11 @@ spring:
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    #driverClassName: com.mysql.cj.jdbc.Driver
-    #url: jdbc:mysql://localhost:3306/ryp?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    #url: jdbc:mysql://localhost:3306/ry-vue?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
     #username: root
-    #password: root123456
-    driverClassName: org.postgresql.Driver
+    #password: root
+    driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5454/ryvpp?useSSL=false
     username: postgres
     password: 123456
@@ -53,9 +53,3 @@ spring:
           starttls:
             enable: true
             required: true
-
-#logging:
-#  level:
-#    org.mybatis: debug
-#    org.apache.ibatis: debug
-#    org.postgresql: debug

@@ -1,6 +1,10 @@
 package com.ruoyi.common.core.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.ruoyi.common.core.domain.TreeEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,8 +26,8 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("sys_dept")
-@ApiModel("部门业务对象")
 @KeySequence("sys_dept_dept_id_seq")
+@ApiModel("部门业务对象")
 public class SysDept extends TreeEntity {
 	private static final long serialVersionUID = 1L;
 

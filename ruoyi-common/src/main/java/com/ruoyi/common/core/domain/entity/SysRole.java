@@ -2,7 +2,12 @@ package com.ruoyi.common.core.domain.entity;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.ruoyi.common.annotation.ExcelDictFormat;
 import com.ruoyi.common.convert.ExcelDictConvert;
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -11,10 +16,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.apache.ibatis.type.JdbcType;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -28,8 +31,8 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("sys_role")
-@ExcelIgnoreUnannotated
 @KeySequence("sys_role_role_id_seq")
+@ExcelIgnoreUnannotated
 public class SysRole extends BaseEntity {
 
 	/**
@@ -64,7 +67,7 @@ public class SysRole extends BaseEntity {
 	@ApiModelProperty(value = "角色排序")
 	@ExcelProperty(value = "角色排序")
 	@NotBlank(message = "显示顺序不能为空")
-    private String roleSort;
+	private String roleSort;
 
 	/**
 	 * 数据范围（1：所有数据权限；2：自定义数据权限；3：本部门数据权限；4：本部门及以下数据权限；5：仅本人数据权限）

@@ -2,7 +2,11 @@ package com.ruoyi.system.domain;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.ruoyi.common.annotation.ExcelDictFormat;
 import com.ruoyi.common.convert.ExcelDictConvert;
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -25,9 +29,9 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("sys_post")
+@KeySequence("sys_post_post_id_seq")
 @ExcelIgnoreUnannotated
 @ApiModel("岗位信息业务对象")
-@KeySequence("sys_post_post_id_seq")
 public class SysPost extends BaseEntity {
 
     /**

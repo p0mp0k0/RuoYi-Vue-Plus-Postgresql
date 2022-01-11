@@ -2,7 +2,10 @@
 [![码云Gitee](https://gitee.com/p0mp0k0/RuoYi-Vue-Plus-Postgresql/badge/star.svg?theme=blue)](https://gitee.com/p0mp0k0/RuoYi-Vue-Plus-Postgresql)
 [![GitHub](https://img.shields.io/github/stars/p0mp0k0/RuoYi-Vue-Plus-Postgresql.svg?style=social&label=Stars)](https://github.com/p0mp0k0/RuoYi-Vue-Plus-Postgresql)
 
-基于RuoYi-Vue-Plus 3.4.0，数据库替换为Postgresql。
+
+2022-01-11 基于RuoYi-Vue-Plus 3.5.0，数据库替换为Postgresql。
+
+2021-12-06 基于RuoYi-Vue-Plus 3.4.0，数据库替换为Postgresql。
 >修改内容：
 1. 将数据库更改为Postgresql
 2. 修改mapper XML中的SQL中对应Postgresql的函数
@@ -25,34 +28,33 @@
 最近有同事需要一个新版，所以抽时间仔细研究了一下，按照新模式进行了迁移。
 
 
-
-
 ## 平台简介
 [![码云Gitee](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus/badge/star.svg?theme=blue)](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus)
 [![GitHub](https://img.shields.io/github/stars/JavaLionLi/RuoYi-Vue-Plus.svg?style=social&label=Stars)](https://github.com/JavaLionLi/RuoYi-Vue-Plus)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus/blob/master/LICENSE)
 [![使用IntelliJ IDEA开发维护](https://img.shields.io/badge/IntelliJ%20IDEA-提供支持-blue.svg)](https://www.jetbrains.com/?from=RuoYi-Vue-Plus)
 <br>
-[![RuoYi-Vue-Plus](https://img.shields.io/badge/RuoYi_Vue_Plus-3.4.0-success.svg)](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus)
+[![RuoYi-Vue-Plus](https://img.shields.io/badge/RuoYi_Vue_Plus-3.5.0-success.svg)](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.5-blue.svg)]()
 [![JDK-8+](https://img.shields.io/badge/JDK-8-green.svg)]()
 [![JDK-11](https://img.shields.io/badge/JDK-11-green.svg)]()
-[![JDK-17](https://img.shields.io/badge/JDK-17-green.svg)]()
 
-> RuoYi-Vue-Plus 是基于 RuoYi-Vue 针对 `分布式集群` 场景升级(不兼容原框架)
+> RuoYi-Vue-Plus 是重写 RuoYi-Vue 针对 `分布式集群` 场景全方位升级(不兼容原框架)
 
 > 系统演示: [传送门](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus/wikis/系统演示?sort_id=4836388)
 
 | 功能介绍 | 使用技术 | 文档地址 | 特性注意事项 |
 |---|---|---|---|
 | 当前框架 | RuoYi-Vue-Plus | [RuoYi-Vue-Plus文档](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus/wikis/pages) | 重写RuoYi-Vue全方位升级(不兼容原框架) |
-| satoken分支 | RuoYi-Vue-Plus-satoken | [satoken分支地址](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus/tree/satoken/) | 使用satoken重构权限鉴权(公测 可尝试上生产) |
+| satoken分支 | RuoYi-Vue-Plus-satoken | [satoken分支地址](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus/tree/satoken/) | 高可读性 扩展性(推荐使用) |
 | 单体分支 | RuoYi-Vue-Plus-fast | [fast分支地址](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus/tree/fast/) | 单体应用结构 |
+| Vue3分支 | RuoYi-Vue-Plus-UI | [UI地址](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus-UI) | 由于组件还未完善 仅供学习 |
 | 原框架 | RuoYi-Vue | [RuoYi-Vue官网](http://ruoyi.vip/) | 定期同步需要的功能 |
 | 前端开发框架 | Vue、Element UI | [Element UI官网](https://element.eleme.cn/#/zh-CN) | |
 | 后端开发框架 | SpringBoot | [SpringBoot官网](https://spring.io/projects/spring-boot/#learn) | |
-| 容器框架 | Undertow | [Undertow官网](https://undertow.io/) | 基于 Netty 的高性能容器 |
+| 容器框架 | Undertow | [Undertow官网](https://undertow.io/) | 基于 XNIO 的高性能容器 |
 | 权限认证框架 | Spring Security、Jwt | [SpringSecurity官网](https://spring.io/projects/spring-security#learn) | 支持多终端认证系统 |
+| 权限认证框架 | Sa-Token、Jwt | [Sa-Token官网](https://sa-token.dev33.cn/) | 强解耦、强扩展 |
 | 关系数据库 | MySQL | [MySQL官网](https://dev.mysql.com/) | 适配 8.X 最低 5.7 |
 | 缓存数据库 | Redis | [Redis官网](https://redis.io/) | 适配 6.X 最低 4.X |
 | 数据库框架 | Mybatis-Plus | [Mybatis-Plus文档](https://baomidou.com/guide/) | 快速 CRUD 增加开发效率 |

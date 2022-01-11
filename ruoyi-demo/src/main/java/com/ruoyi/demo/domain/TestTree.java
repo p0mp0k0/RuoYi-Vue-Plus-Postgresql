@@ -1,6 +1,11 @@
 package com.ruoyi.demo.domain;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.KeySequence;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.ruoyi.common.core.domain.TreeEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

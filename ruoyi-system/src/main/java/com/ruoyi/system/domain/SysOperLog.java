@@ -2,7 +2,11 @@ package com.ruoyi.system.domain;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.KeySequence;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.common.annotation.ExcelDictFormat;
 import com.ruoyi.common.convert.ExcelDictConvert;
 import io.swagger.annotations.ApiModel;
@@ -24,9 +28,9 @@ import java.util.Map;
 @Data
 @Accessors(chain = true)
 @TableName("sys_oper_log")
+@KeySequence("sys_oper_log_oper_id_seq")
 @ExcelIgnoreUnannotated
 @ApiModel("操作日志记录业务对象")
-@KeySequence("sys_oper_log_oper_id_seq")
 public class SysOperLog implements Serializable {
 
     private static final long serialVersionUID = 1L;

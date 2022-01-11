@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.generator.mapper.GenTableColumnMapper">
-
+    
     <resultMap type="GenTableColumn" id="GenTableColumnResult">
         <id     property="columnId"       column="column_id"      />
         <result property="tableId"        column="table_id"       />
@@ -28,10 +28,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"       column="update_by"      />
         <result property="updateTime"     column="update_time"    />
     </resultMap>
-
+    
     <select id="selectDbTableColumnsByName" parameterType="String" resultMap="GenTableColumnResult">
 		select column_name, is_required, is_pk, sort, column_comment, is_increment, column_type
         from list_column where table_name = (#{tableName})
+		order by ordinal_position
 	</select>
 
 </mapper>

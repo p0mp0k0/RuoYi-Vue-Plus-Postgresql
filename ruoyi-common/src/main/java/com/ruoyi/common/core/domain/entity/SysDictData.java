@@ -2,10 +2,10 @@ package com.ruoyi.common.core.domain.entity;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.ruoyi.common.annotation.ExcelDictFormat;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.convert.ExcelDictConvert;
@@ -29,9 +29,9 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("sys_dict_data")
+@KeySequence("sys_dict_data_dict_code_seq")
 @ExcelIgnoreUnannotated
 @ApiModel("字典数据业务对象")
-@KeySequence("sys_dict_data_dict_code_seq")
 public class SysDictData extends BaseEntity {
 
 	/**

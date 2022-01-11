@@ -1,9 +1,10 @@
 package com.ruoyi.common.core.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.KeySequence;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.ruoyi.common.core.domain.TreeEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -24,8 +25,8 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("sys_menu")
-@ApiModel("菜单权限业务对象")
 @KeySequence("sys_menu_menu_id_seq")
+@ApiModel("菜单权限业务对象")
 public class SysMenu extends TreeEntity {
 
 	/**
@@ -68,6 +69,7 @@ public class SysMenu extends TreeEntity {
      * 路由参数
      */
 	@ApiModelProperty(value = "路由参数")
+    @TableField("\"query\"")
     private String query;
 
 	/**

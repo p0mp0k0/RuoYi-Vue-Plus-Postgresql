@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.ruoyi.common.utils.StringUtils;
-import lombok.extern.log4j.Log4j;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.keygen.Jdbc3KeyGenerator;
 import org.apache.ibatis.executor.keygen.KeyGenerator;
 import org.apache.ibatis.executor.keygen.NoKeyGenerator;
@@ -21,27 +19,23 @@ import java.util.List;
  *
  * @author Lion Li
  */
-@Slf4j
 public class InsertAll extends AbstractMethod {
 
 	private final static String[] FILL_PROPERTY = {"createTime", "createBy", "updateTime", "updateBy"};
 
 	@Override
 	public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        log.info("***********************************injectMappedStatement*******************************");
-        final String sql = "<script>insert into %s %s values %s</script>";
+		final String sql = "<script>insert into %s %s values %s</script>";
 		final String fieldSql = prepareFieldSql(tableInfo);
 		final String valueSql = prepareValuesSqlForMysqlBatch(tableInfo);
-        KeyGenerator keyGenerator = new NoKeyGenerator();
+		KeyGenerator keyGenerator = new NoKeyGenerator();
 		String sqlMethod = "insertAll";
 		String keyProperty = null;
 		String keyColumn = null;
-
-        // 表包含主键处理逻辑,如果不包含主键当普通字段处理
+		// 表包含主键处理逻辑,如果不包含主键当普通字段处理
 		if (StringUtils.isNotBlank(tableInfo.getKeyProperty())) {
 			if (tableInfo.getIdType() == IdType.AUTO) {
 				/** 自增主键 */
-                log.info("Auto");
 				keyGenerator = new Jdbc3KeyGenerator();
 				keyProperty = tableInfo.getKeyProperty();
 				keyColumn = tableInfo.getKeyColumn();
@@ -53,16 +47,9 @@ public class InsertAll extends AbstractMethod {
 				}
 			}
 		}
-        log.info("tableInfo: "+ tableInfo);
-        log.info("fieldSql: "+ fieldSql);
-        log.info("valueSql: "+ valueSql);
-        log.info("keyGenerator: "+ keyGenerator);
-        log.info("keyProperty: "+ keyProperty);
-        log.info("keyColumn: "+ keyColumn);
-
-        final String sqlResult = String.format(sql, tableInfo.getTableName(), fieldSql, valueSql);
+		final String sqlResult = String.format(sql, tableInfo.getTableName(), fieldSql, valueSql);
 		SqlSource sqlSource = languageDriver.createSqlSource(configuration, sqlResult, modelClass);
-        return this.addInsertMappedStatement(mapperClass, modelClass, sqlMethod, sqlSource, keyGenerator, keyProperty, keyColumn);
+		return this.addInsertMappedStatement(mapperClass, modelClass, sqlMethod, sqlSource, keyGenerator, keyProperty, keyColumn);
 	}
 
 	private String prepareFieldSql(TableInfo tableInfo) {
