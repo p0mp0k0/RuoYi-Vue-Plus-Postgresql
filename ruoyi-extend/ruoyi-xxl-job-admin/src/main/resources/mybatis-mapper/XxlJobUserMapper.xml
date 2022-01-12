@@ -31,8 +31,8 @@
 			</if>
 		</trim>
 		ORDER BY username ASC
-		LIMIT #{offset}, #{pagesize}
-	</select>
+		LIMIT #{pagesize} OFFSET #{offset}
+    </select>
 
 	<select id="pageListCount" parameterType="java.util.HashMap" resultType="int">
 		SELECT count(1)
