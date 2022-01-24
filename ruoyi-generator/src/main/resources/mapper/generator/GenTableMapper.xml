@@ -67,10 +67,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				AND lower(table_comment) like lower(concat('%', #{genTable.tableComment}, '%'))
 			</if>
 			<if test="genTable.params.beginTime != null and genTable.params.beginTime != ''"><!-- 开始时间检索 -->
-				AND date_format(create_time,'%y%m%d') &gt;= date_format(#{genTable.params.beginTime},'%y%m%d')
+				AND create_time &gt;= to_date(#{genTable.params.beginTime},'YYYY-MM-DD')
 			</if>
 			<if test="genTable.params.endTime != null and genTable.params.endTime != ''"><!-- 结束时间检索 -->
-				AND date_format(create_time,'%y%m%d') &lt;= date_format(#{genTable.params.endTime},'%y%m%d')
+				AND create_time &lt;= to_date(#{genTable.params.endTime},'YYYY-MM-DD')
 			</if>
 		</where>
 	</select>
