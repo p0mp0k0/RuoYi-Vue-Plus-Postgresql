@@ -14,7 +14,7 @@ import java.util.List;
 public interface ISysNoticeService extends IService<SysNotice> {
 
 
-    TableDataInfo<SysNotice> selectPageNoticeList(SysNotice notice);
+    TableDataInfo<SysNotice> selectPageNoticeList(SysNotice notice, PageQuery pageQuery);
 
     /**
      * 查询公告信息
